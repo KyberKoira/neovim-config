@@ -29,9 +29,6 @@ vim.opt.rtp:prepend(lazypath)
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
 require('lazy').setup({
-  -- NOTE: First, some plugins that don't require any configuration
-  { "bluz71/vim-moonfly-colors", name = "moonfly", lazy = false, priority = 1000 },
-
   -- Git related plugins
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
@@ -178,7 +175,6 @@ require('lazy').setup({
     },
     build = ':TSUpdate',
   },
-  {'preservim/nerdtree'},
   {
   "nvim-tree/nvim-tree.lua",
   version = "*",
@@ -190,20 +186,7 @@ require('lazy').setup({
     require("nvim-tree").setup {}
   end,
   },
-
-  -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
-  --       These are some example plugins that I've included in the kickstart repository.
-  --       Uncomment any of the lines below to enable them.
-  -- require 'kickstart.plugins.autoformat',
-  -- require 'kickstart.plugins.debug',
-
-  -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-  --    You can use this folder to prevent any conflicts with this init.lua if you're interested in keeping
-  --    up-to-date with whatever is in the kickstart repo.
-  --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  --
-  --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  -- { import = 'custom.plugins' },
+  {'akinsho/toggleterm.nvim', version = "*", config = true}
 }, {})
 
 local function open_nvim_tree(data)
@@ -548,10 +531,22 @@ mason_lspconfig.setup_handlers {
   end,
 }
 
-vim.cmd [[colorscheme moonfly]]
 vim.keymap.set('n', '<CR>', 'm`o<Esc>``')
 vim.keymap.set('n', '<S-CR>', 'm`O<Esc>``')
+
+-- Find & Replace
 vim.keymap.set('n','<leader>r', ':%s/')
+
+-- Näytä File Explorer
+vim.keymap.set('n','<leader>b', ':NvimTreeFocus<Enter>')
+vim.keymap.set('n','<leader>bc', ':NvimTreeClose<Enter>')
+
+-- Tab navigaatiot
+vim.keymap.set('n','<leader><Left>', ':-tabnext<Enter>')
+vim.keymap.set('n','<leader><Right>', ':+tabnext<Enter>')
+vim.keymap.set('n','<leader>t', ':tabnew<Enter>')
+vim.keymap.set('n','<leader>tc', ':tabclose<Enter>')
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- For local replace
 --vim.keymap.set('n', 'gr' 'gd[{V%::s/<C-R>///gc<left><left><left>')
