@@ -1,6 +1,8 @@
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
+--
+
 vim.g.mapleader = ','
 vim.g.maplocalleader = ','
 
@@ -176,7 +178,18 @@ require('lazy').setup({
     },
     build = ':TSUpdate',
   },
-  {'preservim/nerdtree'}
+  {'preservim/nerdtree'},
+  {
+  "nvim-tree/nvim-tree.lua",
+  version = "*",
+  lazy = false,
+  dependencies = {
+    "nvim-tree/nvim-web-devicons",
+  },
+  config = function()
+    require("nvim-tree").setup {}
+  end,
+  },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
@@ -192,6 +205,24 @@ require('lazy').setup({
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   -- { import = 'custom.plugins' },
 }, {})
+
+local function open_nvim_tree(data)
+
+  -- buffer is a real file on the disk
+  local real_file = vim.fn.filereadable(data.file) == 1
+
+  -- buffer is a [No Name]
+  local no_name = data.file == "" and vim.bo[data.buf].buftype == ""
+
+  if not real_file and not no_name then
+    return
+  end
+
+  -- open the tree, find the file but don't focus it
+  require("nvim-tree.api").tree.toggle({ focus = false, find_file = true, })
+end
+
+vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
 
 vim.keymap.set('n', '<Space>', ':NERDTreeFocus<CR>')
 vim.keymap.set('n', '<C-n>', ':NERDTree<CR>')
@@ -520,5 +551,10 @@ mason_lspconfig.setup_handlers {
 vim.cmd [[colorscheme moonfly]]
 vim.keymap.set('n', '<CR>', 'm`o<Esc>``')
 vim.keymap.set('n', '<S-CR>', 'm`O<Esc>``')
+vim.keymap.set('n','<leader>r', ':%s/')
 -- The line beneath this is called `modeline`. See `:help modeline`
+-- For local replace
+--vim.keymap.set('n', 'gr' 'gd[{V%::s/<C-R>///gc<left><left><left>')
 -- vim: ts=2 sts=2 sw=2 et
+--
+
