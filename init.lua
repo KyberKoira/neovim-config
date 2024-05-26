@@ -534,7 +534,7 @@ mason_lspconfig.setup_handlers {
 require("toggleterm").setup{
   -- size can be a number or function which is passed the current terminal
   size = 20,
-  open_mapping = [[<c-\>]],
+  open_mapping = [[<leader>ö]],
   hide_numbers = true, -- hide the number column in toggleterm buffers
   autochdir = true, -- when neovim changes it current directory the terminal will change it's own when next it's opened
   shade_terminals = false, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
@@ -568,12 +568,10 @@ vim.keymap.set('n', '<S-CR>', 'm`O<Esc>``')
 vim.keymap.set('n','<leader>r', ':%s/')
 
 -- Näytä File Explorer
-vim.keymap.set('n','<leader>b', ':NvimTreeFocus<Enter>')
-vim.keymap.set('n','<leader>bc', ':NvimTreeClose<Enter>')
+vim.keymap.set('n','<leader>f', ':NvimTreeFocus<Enter>')
+vim.keymap.set('n','<leader>fc', ':NvimTreeClose<Enter>')
 
 -- Tab navigaatiot
-vim.keymap.set('n','<leader><Left>', ':-tabnext<Enter>')
-vim.keymap.set('n','<leader><Right>', ':+tabnext<Enter>')
 vim.keymap.set('n','<leader>t', ':tabnew<Enter>')
 vim.keymap.set('n','<leader>tc', ':tabclose<Enter>')
 
