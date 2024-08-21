@@ -175,46 +175,12 @@ require('lazy').setup({
     },
     build = ':TSUpdate',
   },
-  {
-  "nvim-tree/nvim-tree.lua",
-  version = "*",
-  lazy = false,
-  dependencies = {
-    "nvim-tree/nvim-web-devicons",
-  },
-  config = function()
-    require("nvim-tree").setup {}
-  end,
-  },
-  {'akinsho/toggleterm.nvim', version = "*", config = true}
 }, {})
-
-local function open_nvim_tree(data)
-
-  -- buffer is a real file on the disk
-  local real_file = vim.fn.filereadable(data.file) == 1
-
-  -- buffer is a [No Name]
-  local no_name = data.file == "" and vim.bo[data.buf].buftype == ""
-
-  if not real_file and not no_name then
-    return
-  end
-
-  -- open the tree, find the file but don't focus it
-  require("nvim-tree.api").tree.toggle({ focus = false, find_file = true, })
-end
-
-vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
 
 vim.keymap.set('n', '<Space>', ':NERDTreeFocus<CR>')
 vim.keymap.set('n', '<C-n>', ':NERDTree<CR>')
 vim.keymap.set('n', '<C-t>', ':NERDTreeToggle<CR>')
 vim.keymap.set('n', '<C-f>', ':NERDTreeFind<CR>')
-
--- [[ Setting options ]]
--- See `:help vim.o`
--- NOTE: You can change these options as you wish!
 
 -- Set highlight on search
 vim.o.hlsearch = false
@@ -531,55 +497,5 @@ mason_lspconfig.setup_handlers {
   end,
 }
 
-require("toggleterm").setup{
-  -- size can be a number or function which is passed the current terminal
-  size = 20,
-  open_mapping = [[<leader>ö]],
-  hide_numbers = true, -- hide the number column in toggleterm buffers
-  autochdir = true, -- when neovim changes it current directory the terminal will change it's own when next it's opened
-  shade_terminals = false, -- NOTE: this option takes priority over highlights specified so if you specify Normal highlights you should set this to false
-  close_on_exit = true, -- close the terminal window when the process exits
-   -- Change the default shell. Can be a string or a function returning a string
-  shell = vim.o.shell,
-  insert_mappings = true, -- whether or not the open mapping applies in insert mode
-  terminal_mappings = true, -- whether or not the open mapping applies in the opened terminals
-  auto_scroll = true, -- automatically scroll to the bottom on terminal output
-  -- This field is only relevant if direction is set to 'float'
-  float_opts = {
-    -- The border key is *almost* the same as 'nvim_open_win'
-    -- see :h nvim_open_win for details on borders however
-    -- the 'curved' border is a custom border type
-    -- not natively supported but implemented in this plugin.
-    border = 'single',
-    -- like `size`, width, height, row, and col can be a number or function which is passed the current terminal
-  },
-  winbar = {
-    enabled = false,
-    name_formatter = function(term) --  term: Terminal
-      return term.name
-    end
-  },
-}
-
 vim.keymap.set('n', '<CR>', 'm`o<Esc>``')
 vim.keymap.set('n', '<S-CR>', 'm`O<Esc>``')
-
--- Find & Replace
-vim.keymap.set('n','<leader>r', ':%s/')
-
--- Näytä File Explorer
-vim.keymap.set('n','<leader>f', ':NvimTreeFocus<Enter>')
-vim.keymap.set('n','<leader>fc', ':NvimTreeClose<Enter>')
-
--- Tab navigaatiot
-vim.keymap.set('n','<leader>t', ':tabnew<Enter>')
-vim.keymap.set('n','<leader>tc', ':tabclose<Enter>')
-
--- Terminal Interaktiot
-
--- The line beneath this is called `modeline`. See `:help modeline`
--- For local replace
---vim.keymap.set('n', 'gr' 'gd[{V%::s/<C-R>///gc<left><left><left>')
--- vim: ts=2 sts=2 sw=2 et
---
-
